@@ -1,10 +1,11 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using System;
+using System.ComponentModel.DataAnnotations;
 using vsx.Services;
 
 namespace vsx.Commands
 {
-    [Command(Name = "connect")]
+    [Command(Name = Commands.Connect)]
     public class ConnectCommand
     {
         private readonly IConsole _console;
@@ -17,9 +18,11 @@ namespace vsx.Commands
         }
 
         [Option("-acc|--accountName", Description = "The VSTS account name.")]
+        [Required]
         public string VstsAccountName { get; set; }
 
         [Option("-pat|--personalAccessToken", Description = "A valid personal access token issued from VSTS.")]
+        [Required]
         public string PersonalAccessToken { get; set; }
 
         private int OnExecute()

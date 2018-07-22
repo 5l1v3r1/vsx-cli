@@ -5,9 +5,13 @@ namespace vsx.Extensions
 {
     public static class ServiceProviderExtensions
     {
-        public static ServiceProvider ConfigureServices()
-            => new ServiceCollection()
-                .AddSingleton<IConnectionService, ConnectionService>()
-                .BuildServiceProvider();
+        public static IServiceCollection ConfigureServices(this ServiceCollection services)
+            => services.AddSingleton<IConnectionService, ConnectionService>()
+                       .AddSingleton<IBuildDefinitionsService, BuildDefinitionsService>()
+                       .AddSingleton<IReleaseDefinitionsService, ReleaseDefinitionsService>()
+                       .AddSingleton<ITaskGroupsService, TaskGroupsService>()
+                       .AddSingleton<ITaskService, TaskService>()
+                       .AddSingleton<IContextService, ContextService>()
+                       .AddSingleton<IOutputService, OutputService>();
     }
 }

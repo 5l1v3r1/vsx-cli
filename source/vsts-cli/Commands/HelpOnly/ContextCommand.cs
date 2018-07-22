@@ -4,7 +4,8 @@ using System.Text;
 
 namespace vsx.Commands
 {
-    class OptionsCommand
+    public class ContextCommand
     {
+
     }
 }

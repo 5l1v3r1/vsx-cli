@@ -3,7 +3,7 @@ using vsx.Services;
 
 namespace vsx.Commands
 {
-    [Command(Name = "connect")]
+    [Command(Name = Commands.Disconnect)]
     public class DisconnectCommand
     {
         private readonly IConsole _console;
