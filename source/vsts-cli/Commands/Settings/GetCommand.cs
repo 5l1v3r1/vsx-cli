@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace vsx.Services
+namespace vsx.Commands
 {
-    public interface IOutputService
+    public class GetCommand
     {
-
     }
 }

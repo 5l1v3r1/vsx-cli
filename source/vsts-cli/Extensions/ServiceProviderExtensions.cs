@@ -11,7 +11,6 @@ namespace vsx.Extensions
                        .AddSingleton<IReleaseDefinitionsService, ReleaseDefinitionsService>()
                        .AddSingleton<ITaskGroupsService, TaskGroupsService>()
                        .AddSingleton<ITaskService, TaskService>()
-                       .AddSingleton<IContextService, ContextService>()
-                       .AddSingleton<IOutputService, OutputService>();
+                       .AddSingleton<ISettingsService, SettingsService>();
     }
 }

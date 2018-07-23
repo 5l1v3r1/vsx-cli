@@ -1,4 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using vsx.Extensions;
 
 namespace vsx.Commands
 {
@@ -20,7 +21,7 @@ namespace vsx.Commands
 
         private int OnExecute()
         {
-            _console.WriteLine("You must specify at a subcommand.");
+            _console.SpecifyASubcommand(Commands.TaskGroups);
             _app.ShowHelp();
             return 1;
         }

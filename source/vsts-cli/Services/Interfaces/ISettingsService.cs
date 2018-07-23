@@ -4,7 +4,8 @@ using System.Text;
 
 namespace vsx.Services
 {
-    public class ContextService : IContextService
+    public interface ISettingsService
     {
+
     }
 }

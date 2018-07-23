@@ -5,7 +5,10 @@ using vsx.Services;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Connect)]
+    [Command(Name = Commands.Connect,
+        FullName = "vsx: connect command",
+        Description = "Establish a connection to your VSTS account"),
+        HelpOption]
     public class ConnectCommand
     {
         private readonly IConsole _console;

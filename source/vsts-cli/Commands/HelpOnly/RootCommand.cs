@@ -1,14 +1,15 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using vsx.Extensions;
 
 namespace vsx.Commands
 {
     [Command(Commands.Vsx,
-        FullName = "vsx-cli tool",
-        Description = "Manage VSTS build and release tasks."),
+        FullName = "vsx: vsts-cli tool",
+        Description = "Search for VSTS build tasks in build and release definitions."),
         HelpOption,
         Subcommand(Commands.Connect, typeof(ConnectCommand)),
         Subcommand(Commands.Disconnect, typeof(DisconnectCommand)),
-        Subcommand(Commands.Context, typeof(ContextCommand)),
+        Subcommand(Commands.Context, typeof(SettingsCommand)),
         Subcommand(Commands.Builds, typeof(BuildDefinitionsCommand)),
         Subcommand(Commands.Releases, typeof(ReleaseDefinitionsCommand)),
         Subcommand(Commands.TaskGroups, typeof(TaskGroupsCommand))]
@@ -23,9 +24,9 @@ namespace vsx.Commands
             _app = app;
         }
 
-        private int OnExecute(CommandLineApplication app, IConsole console)
+        private int OnExecute()
         {
-            _console.WriteLine("You must specify at a subcommand.");
+            _console.SpecifyASubcommand(Commands.Vsx);
             _app.ShowHelp();
             return 1;
         }

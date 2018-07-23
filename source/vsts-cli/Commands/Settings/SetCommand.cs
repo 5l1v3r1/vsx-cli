@@ -4,7 +4,7 @@ using System.Text;
 
 namespace vsx.Commands
 {
-    public class ContextCommand
+    public class SetCommand
     {
 
     }

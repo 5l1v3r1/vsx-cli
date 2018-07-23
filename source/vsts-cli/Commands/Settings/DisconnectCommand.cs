@@ -3,7 +3,10 @@ using vsx.Services;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Disconnect)]
+    [Command(Name = Commands.Disconnect,
+        FullName = "vsx: disconnect command",
+        Description = "Clear the connection cache."),
+        HelpOption]
     public class DisconnectCommand
     {
         private readonly IConsole _console;

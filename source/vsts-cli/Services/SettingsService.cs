@@ -4,7 +4,7 @@ using System.Text;
 
 namespace vsx.Services
 {
-    public class OutputService : IOutputService
+    public class SettingsService : ISettingsService
     {
     }
 }

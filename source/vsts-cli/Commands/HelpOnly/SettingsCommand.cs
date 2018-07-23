@@ -3,17 +3,17 @@ using vsx.Extensions;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Builds,
-        Description = "Manage VSTS build definition tasks."),
+    [Command(Name = Commands.Settings,
+        Description = "Manage the settings for the application."),
         HelpOption,
-        Subcommand(Commands.List, typeof(ListCommand)),
-        Subcommand(Commands.Search, typeof(SearchCommand))]
-    public class BuildDefinitionsCommand
+        Subcommand(Commands.Get, typeof(GetCommand)),
+        Subcommand(Commands.Set, typeof(SetCommand))]
+    public class SettingsCommand
     {
         private readonly IConsole _console;
         private readonly CommandLineApplication _app;
 
-        public BuildDefinitionsCommand(IConsole console, CommandLineApplication app)
+        public SettingsCommand(IConsole console, CommandLineApplication app)
         {
             _console = console;
             _app = app;
@@ -21,7 +21,7 @@ namespace vsx.Commands
 
         private int OnExecute()
         {
-            _console.SpecifyASubcommand(Commands.Builds);
+            _console.SpecifyASubcommand(Commands.Settings);
             _app.ShowHelp();
             return 1;
         }
