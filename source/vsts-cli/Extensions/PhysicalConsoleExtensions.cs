@@ -14,6 +14,13 @@ namespace vsx.Extensions
             console.ResetColor();
         }
 
+        public static void ErrorMessage(this IConsole console, string message)
+        {
+            console.ForegroundColor = ConsoleColor.Red;
+            console.WriteLine(message);
+            console.ResetColor();
+        }
+
         public static void WriteResults<T>(this IConsole console, List<T> value) where T : class
         {
 

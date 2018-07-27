@@ -6,11 +6,12 @@ namespace vsx.Extensions
     public static class ServiceProviderExtensions
     {
         public static IServiceCollection ConfigureServices(this ServiceCollection services)
-            => services.AddSingleton<IConnectionService, ConnectionService>()
+            => services.AddSingleton<ICacheService, CacheService>()
+                       .AddSingleton<IConnectionService, ConnectionService>(sp => new ConnectionService(sp.GetRequiredService<ICacheService>()))
+                       .AddSingleton<ISettingsService, SettingsService>(sp => new SettingsService(sp.GetRequiredService<ICacheService>()))
                        .AddSingleton<IBuildDefinitionsService, BuildDefinitionsService>()
                        .AddSingleton<IReleaseDefinitionsService, ReleaseDefinitionsService>()
                        .AddSingleton<ITaskGroupsService, TaskGroupsService>()
-                       .AddSingleton<ITaskService, TaskService>()
-                       .AddSingleton<ISettingsService, SettingsService>();
+                       .AddSingleton<ITaskService, TaskService>();
     }
 }

@@ -14,5 +14,6 @@
         public const string Tasks = "tasks";
         public const string List = "list";
         public const string Search = "search";
+        public const string Details = "details";
     }
 }

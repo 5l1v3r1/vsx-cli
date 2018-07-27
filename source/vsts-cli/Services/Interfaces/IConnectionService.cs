@@ -18,12 +18,6 @@ namespace vsx.Services
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        bool CheckConnection();
-
-        /// <summary>
-        /// 
-        /// </summary>
         void Disconnect();
 
         /// <summary>

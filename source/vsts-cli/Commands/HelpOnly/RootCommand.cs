@@ -9,7 +9,7 @@ namespace vsx.Commands
         HelpOption,
         Subcommand(Commands.Connect, typeof(ConnectCommand)),
         Subcommand(Commands.Disconnect, typeof(DisconnectCommand)),
-        Subcommand(Commands.Context, typeof(SettingsCommand)),
+        Subcommand(Commands.Settings, typeof(SettingsCommand)),
         Subcommand(Commands.Builds, typeof(BuildDefinitionsCommand)),
         Subcommand(Commands.Releases, typeof(ReleaseDefinitionsCommand)),
         Subcommand(Commands.TaskGroups, typeof(TaskGroupsCommand))]
