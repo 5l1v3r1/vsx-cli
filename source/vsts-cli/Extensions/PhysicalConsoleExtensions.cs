@@ -1,4 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -21,9 +22,12 @@ namespace vsx.Extensions
             console.ResetColor();
         }
 
-        public static void WriteResults<T>(this IConsole console, List<T> value) where T : class
+        public static void WriteResults(this IConsole console, JObject jObject)
         {
-
+            foreach (var property in jObject)
+            {
+                console.WriteLine("{0}: {1}", property.Key, property.Value);
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ namespace vsx.Extensions
                        .AddSingleton<ICacheService, CacheService>()
                        .AddSingleton<IConnectionService, ConnectionService>(sp => new ConnectionService(sp.GetRequiredService<ICacheService>(), sp.GetRequiredService<IConsole>()))
                        .AddSingleton<IParserService, ParserService>()
+                       .AddSingleton<IFileService, FileService>()
                        .AddSingleton<ISettingsService, SettingsService>(sp => new SettingsService(sp.GetRequiredService<ICacheService>()))
                        .AddSingleton<IBuildDefinitionsService, BuildDefinitionsService>()
                        .AddSingleton<IReleaseDefinitionsService, ReleaseDefinitionsService>()

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
+using vsx.Extensions;
 using vsx.Models;
 using vsx.Services;
 
@@ -12,13 +13,21 @@ namespace vsx.Commands
         private readonly CommandLineApplication _app;
         private readonly IConsole _console;
         private readonly IConnectionService _connectionService;
+        private readonly IParserService _parseService;
+        private readonly IFileService _fileService;
 
-        public DetailsCommand(CommandLineApplication app, IConsole console, IConnectionService connectionService)
+        public DetailsCommand(
+            CommandLineApplication app, 
+            IConsole console, IConnectionService connectionService, 
+            IParserService parserService, 
+            IFileService fileService)
             : base(console, app)
         {
             _app = app;
             _console = console;
             _connectionService = connectionService;
+            _parseService = parserService;
+            _fileService = fileService;
         }
 
         [Argument(0)]
@@ -26,6 +35,9 @@ namespace vsx.Commands
 
         [Argument(1)]
         public int BuildId { get; set; }
+
+        [Option(CommandOptionType.NoValue)]
+        public bool Detailed { get; set; }
 
         private int OnExecute() => _connectionService.Connect(new CredentialsModel(AccountName, PersonalAccessToken)) ? GetResults().Result : ConnectionError();
 
@@ -35,7 +47,9 @@ namespace vsx.Commands
             var client = await _connectionService.GetBuildHttpClient();
             var definition = await buildDefinitionsService.GetBuildDefinitionById(client, Project, BuildId);
 
-            _console.WriteLine(definition);
+            var parsedResults = _parseService.SerializeBuildDetails(definition);
+            _fileService.SaveToJson(parsedResults);
+            _console.WriteLine(parsedResults);
 
             return 1;
         }
