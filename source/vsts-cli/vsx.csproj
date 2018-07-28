@@ -7,6 +7,10 @@
     <RootNamespace>vsx</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.0.0-preview4" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.2.5" />

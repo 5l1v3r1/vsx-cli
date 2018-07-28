@@ -1,7 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using vsx.Services;
 
 namespace vsx.Commands.Executors
@@ -13,30 +11,19 @@ namespace vsx.Commands.Executors
         private readonly IConsole _console;
         private readonly IConnectionService _connectionService;
 
-        public DetailsCommand(
-            CommandLineApplication app,
-            IConsole console,
-            IConnectionService connectionService)
+        public DetailsCommand(CommandLineApplication app, IConsole console, IConnectionService connectionService)
+            : base(console)
         {
             _app = app;
             _console = console;
             _connectionService = connectionService;
         }
 
-        private int OnExecute()
-        {
-            if (_connectionService.CheckConnection())
-            {
-                return GetResults();
-            }
-            else
-            {
-                var x = _app.Parent;
-            }
+        private int OnExecute() => (_connectionService.Connect(AccountName, PersonalAccessToken)) ? GetResults() : ConnectionError();
 
-            _console.ForegroundColor = ConsoleColor.Red;
-            _console.WriteLine("Error during establishing connection.");
-            return 0;
+        internal override int GetResults()
+        {
+            return 1;
         }
     }
 }

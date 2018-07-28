@@ -1,6 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Threading.Tasks;
 using vsx.Services;
 
@@ -13,10 +12,8 @@ namespace vsx.Commands
         private readonly IConsole _console;
         private readonly IConnectionService _connectionService;
 
-        public ListCommand(
-            CommandLineApplication app, 
-            IConsole console, 
-            IConnectionService connectionService)
+        public ListCommand(CommandLineApplication app, IConsole console, IConnectionService connectionService)
+            : base(console)
         {
             _app = app;
             _console = console;
@@ -26,23 +23,9 @@ namespace vsx.Commands
         [Argument(0)]
         public string Project { get; set; }
 
-        private int OnExecute()
-        {
-            if (_connectionService.CheckConnection())
-            {
-                return GetResults();
-            }
-            else
-            {
-                var x =  _app.Parent;
-            }
+        private int OnExecute() => (_connectionService.Connect(AccountName, PersonalAccessToken)) ? GetResults() : ConnectionError();
 
-            _console.ForegroundColor = ConsoleColor.Red;
-            _console.WriteLine("Error during establishing connection.");
-            return 0;
-        }
-
-        private int GetResults()
+        internal override int GetResults()
         {
             switch (_app.Parent.Name)
             {
@@ -70,9 +53,9 @@ namespace vsx.Commands
             {
 
             }
-            
+
             // output results
-            
+
 
             return 1;
         }
