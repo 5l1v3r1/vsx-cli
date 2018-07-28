@@ -5,12 +5,16 @@ namespace vsx.Services
 {
     public interface ICacheService
     {
-        void CacheCredentials(string account, string pat);
+        void CacheConnection(CredentialsModel credentialsModel);
 
-        void SaveApplicationSettings(Dictionary<string, string> settings);
+        CredentialsModel GetConnection();
 
-        void ClearCache();
+        void ClearConnectionCache();
 
-        T GetModelFromCache<T>() where T : class, IModel, new();
+        void CacheApplicationSettings(Dictionary<string, string> settings);
+
+        ApplicationSettingsModel GetApplicationSettings();
+
+        void ClearApplicationSettingsCache();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using vsx.Models;
 using vsx.Services;
 
 namespace vsx.Commands
@@ -13,7 +14,7 @@ namespace vsx.Commands
         private readonly IConnectionService _connectionService;
 
         public SearchCommand(CommandLineApplication app, IConsole console, IConnectionService connectionService)
-            : base(console)
+            : base(console, app)
         {
             _app = app;
             _console = console;
@@ -23,34 +24,6 @@ namespace vsx.Commands
         [Argument(0, "", "")]
         public int Project { get; set; }
 
-        private int OnExecute() => (_connectionService.Connect(AccountName, PersonalAccessToken)) ? GetResults() : ConnectionError();
-
-        internal override int GetResults()
-        {
-            switch (_app.Parent.Name)
-            {
-                default:
-                //case Commands.Tasks:
-                //    return SearchTasks();
-                case Commands.Builds:
-                    return SearchBuilds().Result;
-                    //case Commands.Releases:
-                    //    return SearchReleases();
-                    //case Commands.TaskGroups:
-                    //    return SearchTaskGroups();
-            }
-        }
-
-        private async Task<int> SearchBuilds()
-        {
-            var buildDefinitionsService = _app.GetRequiredService<IBuildDefinitionsService>();
-            var client = await _connectionService.GetBuildHttpClient();
-            var definitions = await buildDefinitionsService.GetBuildDefinitions(client, "project");
-
-            // parse results
-            // output results
-
-            return 1;
-        }
+        private int OnExecute() => _connectionService.Connect(new CredentialsModel(AccountName, PersonalAccessToken)) ? GetResults().Result : ConnectionError();
     }
 }

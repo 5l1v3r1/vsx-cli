@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -24,6 +25,12 @@ namespace vsx.Services
             } while (!string.IsNullOrEmpty(continuationToken));
 
             return buildDefinitions;
+        }
+
+        public async Task<BuildDefinition> GetBuildDefinitionById(BuildHttpClient buildHttpClient, string project, int id)
+        {
+            var definitions = await GetBuildDefinitions(buildHttpClient, project);
+            return definitions.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskId(BuildHttpClient buildHttpClient, string project, string id)

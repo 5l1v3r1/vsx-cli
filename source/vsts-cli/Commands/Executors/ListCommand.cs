@@ -1,6 +1,7 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using vsx.Models;
 using vsx.Services;
 
 namespace vsx.Commands
@@ -13,7 +14,7 @@ namespace vsx.Commands
         private readonly IConnectionService _connectionService;
 
         public ListCommand(CommandLineApplication app, IConsole console, IConnectionService connectionService)
-            : base(console)
+            : base(console, app)
         {
             _app = app;
             _console = console;
@@ -23,25 +24,9 @@ namespace vsx.Commands
         [Argument(0)]
         public string Project { get; set; }
 
-        private int OnExecute() => (_connectionService.Connect(AccountName, PersonalAccessToken)) ? GetResults() : ConnectionError();
+        private int OnExecute() => _connectionService.Connect(new CredentialsModel(AccountName, PersonalAccessToken)) ? GetResults().Result : ConnectionError();
 
-        internal override int GetResults()
-        {
-            switch (_app.Parent.Name)
-            {
-                default:
-                case Commands.Tasks:
-                    return ListTasks();
-                case Commands.Builds:
-                    return ListBuilds().Result;
-                case Commands.Releases:
-                    return ListReleases();
-                case Commands.TaskGroups:
-                    return ListTaskGroups();
-            }
-        }
-
-        private async Task<int> ListBuilds()
+        internal override async Task<int> GetTaskResults()
         {
             var buildDefinitionsService = _app.GetRequiredService<IBuildDefinitionsService>();
             var client = await _connectionService.GetBuildHttpClient();
@@ -56,31 +41,6 @@ namespace vsx.Commands
 
             // output results
 
-
-            return 1;
-        }
-
-        private int ListReleases()
-        {
-            var releaseDefinitionsService = _app.GetRequiredService<IReleaseDefinitionsService>();
-            //var client = await _connectionService.GetBuildHttpClient();
-            //var definitions = await buildDefinitionsService.GetBuildDefinitions(client);
-
-
-            return 1;
-        }
-
-        private int ListTaskGroups()
-        {
-            var taskGroupsService = _app.GetRequiredService<ITaskGroupsService>();
-
-
-            return 1;
-        }
-
-        private int ListTasks()
-        {
-            var taskService = _app.GetRequiredService<ITaskService>();
 
             return 1;
         }

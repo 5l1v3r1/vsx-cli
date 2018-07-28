@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 
 namespace vsx.Models
 {
     [Serializable()]
-    public class ApplicationSettingsModel : IModel
+    public class ApplicationSettingsModel
     {
         public int CacheExpiration { get; set; } = 3600;
 
@@ -13,8 +12,6 @@ namespace vsx.Models
         public OutputMode OutputMode { get; set; }
 
         public string OutPutFilePath { get; set; }
-
-        public virtual string GetSerializedModel() => File.ReadAllText($@"{Directory.GetCurrentDirectory()}\settings.txt");
     }
 
     public enum OutputMode

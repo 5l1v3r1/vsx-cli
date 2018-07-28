@@ -8,23 +8,55 @@ namespace vsx.Services
 {
     public class CacheService : ICacheService
     {
-        public void CacheCredentials(string account, string pat)
+        private readonly string _connectionPath;
+        private readonly string _settingsPath;
+
+        public CacheService()
+        {
+            _connectionPath = $@"{Directory.GetCurrentDirectory()}\connection.txt";
+            _settingsPath = $@"{Directory.GetCurrentDirectory()}\settings.txt";
+        }
+
+        public void CacheConnection(CredentialsModel credentialsModel)
         {
             var model = new ConnectionModel()
             {
-                AccountName = account,
-                PersonalAccessToken = pat
+                Expiration = DateTimeOffset.UtcNow.AddHours(1),
+                Credentials = credentialsModel
             };
 
             var serializedModel = SerializeToString(model);
 
-            using (StreamWriter file = File.CreateText($@"{Directory.GetCurrentDirectory()}\connection.txt"))
+            using (StreamWriter file = File.CreateText(_connectionPath))
             {
                 file.WriteLine(serializedModel);
             }
         }
 
-        public void SaveApplicationSettings(Dictionary<string,string> settings)
+        public CredentialsModel GetConnection()
+        {
+            var model = new CredentialsModel(default, default);
+            var deserializedModelFromCache = DeserializeFromString<ConnectionModel>(File.ReadAllText(_connectionPath));
+
+            if (deserializedModelFromCache.Expiration > DateTimeOffset.UtcNow)
+            {
+                model.AccountName = deserializedModelFromCache.Credentials.AccountName;
+                model.PersonalAccessToken = deserializedModelFromCache.Credentials.PersonalAccessToken;
+            }
+            else
+            {
+                ClearConnectionCache();
+            }
+
+            return model;
+        }
+
+        public void ClearConnectionCache()
+        {
+            if (File.Exists(_connectionPath)) File.Delete(_connectionPath);
+        }
+
+        public void CacheApplicationSettings(Dictionary<string,string> settings)
         {
             var model = new ApplicationSettingsModel()
             {
@@ -32,16 +64,15 @@ namespace vsx.Services
             };
         }
 
-        public T GetModelFromCache<T>() where T : class, IModel, new() 
-            => DeserializeFromString<T>(new T().GetSerializedModel());
-
-        public void ClearCache()
+        public ApplicationSettingsModel GetApplicationSettings()
         {
-            var file = $@"{Directory.GetCurrentDirectory()}\connection.txt";
-            if (File.Exists(file)) File.Delete(file);
+            File.ReadAllText(_settingsPath);
+            return null;
+        }
 
-            file = $@"{Directory.GetCurrentDirectory()}\settings.txt";
-            if (File.Exists(file)) File.Delete(file);
+        public void ClearApplicationSettingsCache()
+        {
+            if (File.Exists(_settingsPath)) File.Delete(_settingsPath);
         }
 
         private T DeserializeFromString<T>(string settings) where T: class

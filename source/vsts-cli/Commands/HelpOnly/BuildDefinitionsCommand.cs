@@ -7,7 +7,8 @@ namespace vsx.Commands
         Description = "Manage VSTS build definition tasks."),
         HelpOption,
         Subcommand(Commands.List, typeof(ListCommand)),
-        Subcommand(Commands.Search, typeof(SearchCommand))]
+        Subcommand(Commands.Search, typeof(SearchCommand)),
+        Subcommand(Commands.Details, typeof(DetailsCommand))]
     public class BuildDefinitionsCommand
     {
         private readonly IConsole _console;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.TeamFoundation.Build.WebApi;
 using System.Threading.Tasks;
+using vsx.Models;
 
 namespace vsx.Services
 {
@@ -13,7 +14,7 @@ namespace vsx.Services
         /// </summary>
         /// <param name="vstsAccountName"></param>
         /// <param name="personalAccessToken"></param>
-        bool Connect(string vstsAccountName, string personalAccessToken);
+        bool Connect(CredentialsModel credentialsModel);
 
         /// <summary>
         /// 

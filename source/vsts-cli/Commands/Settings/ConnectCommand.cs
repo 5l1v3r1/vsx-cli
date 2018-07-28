@@ -1,6 +1,7 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using System.ComponentModel.DataAnnotations;
 using vsx.Extensions;
+using vsx.Models;
 using vsx.Services;
 
 namespace vsx.Commands
@@ -30,7 +31,7 @@ namespace vsx.Commands
 
         private int OnExecute()
         {
-            var connection = _connectionService.Connect(vstsAccountName: VstsAccountName, personalAccessToken: PersonalAccessToken);
+            var connection = _connectionService.Connect(new CredentialsModel(VstsAccountName, PersonalAccessToken));
 
             if (connection)
             {

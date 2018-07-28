@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using vsx.Extensions;
 using vsx.Models;
+using vsx.Validators;
 
 namespace vsx.Services
 {
@@ -21,23 +22,23 @@ namespace vsx.Services
             _console = console;
         }
 
-        public bool Connect(string vstsAccountName, string personalAccessToken)
-            => (ValidateCredentials(vstsAccountName, personalAccessToken)) ? ConnectWithCredentials(vstsAccountName, personalAccessToken) : ConnectFromCache();
+        public bool Connect(CredentialsModel credentialsModel)
+            => (ValidateCredentials(credentialsModel)) ? ConnectWithCredentials(credentialsModel) : ConnectFromCache();
 
-        public void Disconnect() => _cacheService.ClearCache();
+        public void Disconnect() => _cacheService.ClearConnectionCache();
 
         public async Task<BuildHttpClient> GetBuildHttpClient() => await _vssConnection.GetClientAsync<BuildHttpClient>();
 
-        private bool ValidateCredentials(string vstsAccountName, string personalAccessToken)
+        private bool ValidateCredentials(CredentialsModel credentialsModel)
         {
-            // TODO
-
-            return true;
+            CredentialsModelValidator validator = new CredentialsModelValidator();
+            FluentValidation.Results.ValidationResult result = validator.Validate(credentialsModel);
+            return result.IsValid;
         }
 
-        private bool ConnectWithCredentials(string vstsAccountName, string personalAccessToken)
+        private bool ConnectWithCredentials(CredentialsModel credentialsModel)
         {
-            _vssConnection = GetVssConnection(vstsAccountName, personalAccessToken);
+            _vssConnection = GetVssConnection(credentialsModel);
 
             try
             {
@@ -50,7 +51,7 @@ namespace vsx.Services
 
             if (_vssConnection.HasAuthenticated)
             {
-                _cacheService.CacheCredentials(vstsAccountName, personalAccessToken);
+                _cacheService.CacheConnection(credentialsModel);
                 return true;
             }
 
@@ -59,14 +60,14 @@ namespace vsx.Services
 
         private bool ConnectFromCache()
         {
-            var model = _cacheService.GetModelFromCache<ConnectionModel>();
-            return ConnectWithCredentials(model.AccountName, model.PersonalAccessToken);
+            var model = _cacheService.GetConnection();
+            return ConnectWithCredentials(model);
         }
 
-        private VssConnection GetVssConnection(string vstsAccountName, string personalAccessToken)
+        private VssConnection GetVssConnection(CredentialsModel credentialsModel)
         {
-            var baseUrl = new Uri(String.Format("https://{0}.visualstudio.com", vstsAccountName));
-            var credentials = new VssBasicCredential(string.Empty, personalAccessToken);
+            var baseUrl = new Uri(String.Format("https://{0}.visualstudio.com", credentialsModel.AccountName));
+            var credentials = new VssBasicCredential(string.Empty, credentialsModel.PersonalAccessToken);
             return new VssConnection(baseUrl, credentials);
         }
     }
