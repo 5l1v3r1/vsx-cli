@@ -9,6 +9,10 @@ namespace vsx.Validators
         {
             RuleFor(credentials => credentials.AccountName).NotNull();
             RuleFor(credentials => credentials.AccountName).NotEmpty();
+
+            RuleFor(credentials => credentials.Project).NotNull();
+            RuleFor(credentials => credentials.Project).NotEmpty();
+
             RuleFor(credentials => credentials.PersonalAccessToken).NotNull();
             RuleFor(credentials => credentials.PersonalAccessToken).NotEmpty();
         }

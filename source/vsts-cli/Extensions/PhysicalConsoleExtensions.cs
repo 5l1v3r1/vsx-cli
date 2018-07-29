@@ -1,7 +1,5 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 
 namespace vsx.Extensions
 {
@@ -20,14 +18,6 @@ namespace vsx.Extensions
             console.ForegroundColor = ConsoleColor.Red;
             console.WriteLine(message);
             console.ResetColor();
-        }
-
-        public static void WriteResults(this IConsole console, JObject jObject)
-        {
-            foreach (var property in jObject)
-            {
-                console.WriteLine("{0}: {1}", property.Key, property.Value);
-            }
         }
     }
 }

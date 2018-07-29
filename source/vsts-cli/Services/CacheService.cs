@@ -35,7 +35,7 @@ namespace vsx.Services
 
         public CredentialsModel GetConnection()
         {
-            var model = new CredentialsModel(default, default);
+            var model = new CredentialsModel(default, default, default);
             var deserializedModelFromCache = DeserializeFromString<ConnectionModel>(File.ReadAllText(_connectionPath));
 
             if (deserializedModelFromCache.Expiration > DateTimeOffset.UtcNow)

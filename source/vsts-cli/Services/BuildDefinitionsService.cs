@@ -3,20 +3,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.VisualStudio.Services.WebApi;
+using vsx.Extensions;
 
 namespace vsx.Services
 {
     public class BuildDefinitionsService : IBuildDefinitionsService
     {
-        public async Task<IList<BuildDefinition>> GetBuildDefinitions(BuildHttpClient buildHttpClient, string project)
+        private readonly IConnectionService _connectionService;
+
+        public BuildDefinitionsService(IConnectionService connectionService)
         {
+            _connectionService = connectionService;
+        }
+
+        public async Task<IList<BuildDefinition>> GetBuildDefinitions()
+        {
+            var client = await _connectionService.GetBuildHttpClient();
+
             List<BuildDefinition> buildDefinitions = new List<BuildDefinition>();
             string continuationToken = null;
 
             do
             {
-                IPagedList<BuildDefinition> buildDefinitionsPage = await buildHttpClient.GetFullDefinitionsAsync2(
-                    project: project,
+                IPagedList<BuildDefinition> buildDefinitionsPage = await client.GetFullDefinitionsAsync2(
+                    project: _connectionService.Project,
                     continuationToken: continuationToken);
 
                 buildDefinitions.AddRange(buildDefinitionsPage);
@@ -27,18 +37,20 @@ namespace vsx.Services
             return buildDefinitions;
         }
 
-        public async Task<BuildDefinition> GetBuildDefinitionById(BuildHttpClient buildHttpClient, string project, int id)
+        public async Task<BuildDefinition> GetBuildDefinitionById(string rawId)
         {
-            var definitions = await GetBuildDefinitions(buildHttpClient, project);
-            return definitions.Where(x => x.Id == id).FirstOrDefault();
+            var definitionId = rawId.EvaluateToId();
+
+            var definitions = await GetBuildDefinitions();
+            return definitions.Where(x => x.Id == definitionId).FirstOrDefault();
         }
 
-        public Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskId(BuildHttpClient buildHttpClient, string project, string id)
+        public Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskId(string id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskName(BuildHttpClient buildHttpClient, string project, string name)
+        public Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskName(string name)
         {
             throw new System.NotImplementedException();
         }

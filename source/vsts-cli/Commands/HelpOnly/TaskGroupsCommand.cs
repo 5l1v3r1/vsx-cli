@@ -7,7 +7,8 @@ namespace vsx.Commands
         Description = "Manage VSTS task groups' tasks."),
         HelpOption,
         Subcommand(Commands.List, typeof(ListCommand)),
-        Subcommand(Commands.Search, typeof(SearchCommand))]
+        Subcommand(Commands.Search, typeof(SearchCommand)),
+        Subcommand(Commands.Details, typeof(DetailsCommand))]
     public class TaskGroupsCommand
     {
         private readonly IConsole _console;

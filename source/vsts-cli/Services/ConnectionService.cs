@@ -1,8 +1,13 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.TeamFoundation.Build.WebApi;
+using Microsoft.TeamFoundation.DistributedTask.WebApi;
 using Microsoft.VisualStudio.Services.Common;
+using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi.Clients;
 using Microsoft.VisualStudio.Services.WebApi;
 using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using vsx.Extensions;
 using vsx.Models;
@@ -22,12 +27,22 @@ namespace vsx.Services
             _console = console;
         }
 
+        public string AccountName { get; set; }
+
+        public string Project { get; set; }
+
+        public string PersonalAccessToken { get; set; }
+
         public bool Connect(CredentialsModel credentialsModel)
             => (ValidateCredentials(credentialsModel)) ? ConnectWithCredentials(credentialsModel) : ConnectFromCache();
 
         public void Disconnect() => _cacheService.ClearConnectionCache();
 
         public async Task<BuildHttpClient> GetBuildHttpClient() => await _vssConnection.GetClientAsync<BuildHttpClient>();
+
+        public async Task<ReleaseHttpClient> GetReleaseHttpClient() => await _vssConnection.GetClientAsync<ReleaseHttpClient>();
+
+        public async Task<TaskAgentHttpClient> GetTaskHttpClient() => await _vssConnection.GetClientAsync<TaskAgentHttpClient>();
 
         private bool ValidateCredentials(CredentialsModel credentialsModel)
         {
@@ -51,6 +66,10 @@ namespace vsx.Services
 
             if (_vssConnection.HasAuthenticated)
             {
+                AccountName = credentialsModel.AccountName;
+                Project = credentialsModel.Project;
+                PersonalAccessToken = credentialsModel.PersonalAccessToken;
+                
                 _cacheService.CacheConnection(credentialsModel);
                 return true;
             }

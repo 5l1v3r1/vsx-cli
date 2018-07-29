@@ -1,11 +1,12 @@
-﻿using Microsoft.TeamFoundation.Build.WebApi;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 
 namespace vsx.Services
 {
     public class ParserService : IParserService
     {
-        public string SerializeBuildDetails(BuildDefinition buildDefinition) => JsonConvert.SerializeObject(buildDefinition, Formatting.Indented);
+        public T DeserializeObject<T>(string input) => JsonConvert.DeserializeObject<T>(input);
+
+        public string SerializeBuildDetails<T>(T buildDefinition) => JsonConvert.SerializeObject(buildDefinition, Formatting.Indented);
+
     }
 }

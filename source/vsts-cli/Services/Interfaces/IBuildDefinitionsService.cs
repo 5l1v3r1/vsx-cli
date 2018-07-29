@@ -6,12 +6,12 @@ namespace vsx.Services
 {
     public interface IBuildDefinitionsService
     {
-        Task<IList<BuildDefinition>> GetBuildDefinitions(BuildHttpClient buildHttpClient, string project);
+        Task<IList<BuildDefinition>> GetBuildDefinitions();
 
-        Task<BuildDefinition> GetBuildDefinitionById(BuildHttpClient buildHttpClient, string project, int id);
+        Task<BuildDefinition> GetBuildDefinitionById(string rawId);
 
-        Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskId(BuildHttpClient buildHttpClient, string project, string id);
+        Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskId(string rawId);
 
-        Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskName(BuildHttpClient buildHttpClient, string project, string name);
+        Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskName(string name);
     }
 }

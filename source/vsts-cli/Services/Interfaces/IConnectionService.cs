@@ -1,4 +1,6 @@
 ﻿using Microsoft.TeamFoundation.Build.WebApi;
+using Microsoft.TeamFoundation.DistributedTask.WebApi;
+using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi.Clients;
 using System.Threading.Tasks;
 using vsx.Models;
 
@@ -19,6 +21,21 @@ namespace vsx.Services
         /// <summary>
         /// 
         /// </summary>
+        string AccountName { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string Project { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string PersonalAccessToken { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         void Disconnect();
 
         /// <summary>
@@ -26,5 +43,17 @@ namespace vsx.Services
         /// </summary>
         /// <returns></returns>
         Task<BuildHttpClient> GetBuildHttpClient();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<ReleaseHttpClient> GetReleaseHttpClient();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<TaskAgentHttpClient> GetTaskHttpClient();
     }
 }

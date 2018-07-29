@@ -25,13 +25,17 @@ namespace vsx.Commands
         [Required]
         public string VstsAccountName { get; set; }
 
-        [Argument(order: 1, description: "A valid personal access token issued from VSTS.", name: "personalAccessToken")]
+        [Argument(order: 1, description: "", name: "")]
+        [Required]
+        public string Project { get; set; }
+
+        [Argument(order: 2, description: "A valid personal access token issued from VSTS.", name: "personalAccessToken")]
         [Required]
         public string PersonalAccessToken { get; set; }
 
         private int OnExecute()
         {
-            var connection = _connectionService.Connect(new CredentialsModel(VstsAccountName, PersonalAccessToken));
+            var connection = _connectionService.Connect(new CredentialsModel(VstsAccountName, Project, PersonalAccessToken));
 
             if (connection)
             {
