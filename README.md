@@ -1,7 +1,7 @@
-# vsts-cli
-> Additional information or tagline
+# vsx-cli
+> Visual Studio Team Services build task manager CLI
 
-Search for build and release tasks on Visual Studio Team Services.
+Search for specific tasks in build and release definitions.
 
 ## Features
 
