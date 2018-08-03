@@ -9,12 +9,10 @@ namespace vsx.Services
     public class TaskService : ITaskService
     {
         private readonly IConnectionService _connectionService;
-        private readonly IParserService _parserService;
 
-        public TaskService(IConnectionService connectionService, IParserService parserService)
+        public TaskService(IConnectionService connectionService)
         {
             _connectionService = connectionService;
-            _parserService = parserService;
         }
 
         public async Task<IList<TaskDefinition>> GetTasks()

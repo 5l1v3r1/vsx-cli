@@ -27,21 +27,34 @@ namespace vsx.Commands
 
         internal override async Task<int> GetTaskResults()
         {
+            var taskService = _app.GetRequiredService<ITaskService>();
+            var tasks = await taskService.GetTasks();
+
+            return ProcessResults(tasks);
+        }
+
+        internal override async Task<int> GetBuildResults()
+        {
             var buildDefinitionsService = _app.GetRequiredService<IBuildDefinitionsService>();
-            var client = await _connectionService.GetBuildHttpClient();
-            var definitions = await buildDefinitionsService.GetBuildDefinitions();
+            var buildDefinitions = await buildDefinitionsService.GetBuildDefinitions();
 
-            // parse results
+            return ProcessResults(buildDefinitions);
+        }
 
-            if (true)
-            {
+        internal override async Task<int> GetReleaseResults()
+        {
+            var releaseDefinitionsService = _app.GetRequiredService<IReleaseDefinitionsService>();
+            var releaseDefinitions = await releaseDefinitionsService.GetReleaseDefinitions();
 
-            }
+            return ProcessResults(releaseDefinitions);
+        }
 
-            // output results
+        internal override async Task<int> GetTaskGroupResults()
+        {
+            var taskGroupsService = _app.GetRequiredService<ITaskGroupsService>();
+            var taskGroups = await taskGroupsService.GetTaskGroups();
 
-
-            return 1;
+            return ProcessResults(taskGroups);
         }
     }
 }

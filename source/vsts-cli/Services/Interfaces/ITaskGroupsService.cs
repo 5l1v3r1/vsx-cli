@@ -9,5 +9,7 @@ namespace vsx.Services
         Task<IList<TaskGroup>> GetTaskGroups();
 
         Task<TaskGroup> GetTaskGroupById(string id);
+
+        Task<IList<TaskGroup>> SearchForTaskInTaskGroups(string taskIdentifier);
     }
 }

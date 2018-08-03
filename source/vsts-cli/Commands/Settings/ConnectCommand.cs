@@ -25,7 +25,7 @@ namespace vsx.Commands
         [Required]
         public string VstsAccountName { get; set; }
 
-        [Argument(order: 1, description: "", name: "")]
+        [Argument(order: 1, description: "The VSTS project collection.", name: "project")]
         [Required]
         public string Project { get; set; }
 

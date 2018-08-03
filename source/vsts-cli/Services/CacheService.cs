@@ -41,6 +41,7 @@ namespace vsx.Services
             if (deserializedModelFromCache.Expiration > DateTimeOffset.UtcNow)
             {
                 model.AccountName = deserializedModelFromCache.Credentials.AccountName;
+                model.Project = deserializedModelFromCache.Credentials.Project;
                 model.PersonalAccessToken = deserializedModelFromCache.Credentials.PersonalAccessToken;
             }
             else

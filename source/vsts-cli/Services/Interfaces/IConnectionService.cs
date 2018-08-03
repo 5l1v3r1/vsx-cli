@@ -1,6 +1,8 @@
 ﻿using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.DistributedTask.WebApi;
+using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi.Clients;
+using Microsoft.VisualStudio.Services.Search.WebApi;
 using System.Threading.Tasks;
 using vsx.Models;
 
@@ -55,5 +57,17 @@ namespace vsx.Services
         /// </summary>
         /// <returns></returns>
         Task<TaskAgentHttpClient> GetTaskHttpClient();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<SearchHttpClient> GetSearchHttpClient();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<GitHttpClient> GetGitHttpClient();
     }
 }

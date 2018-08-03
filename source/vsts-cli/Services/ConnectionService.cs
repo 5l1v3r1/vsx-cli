@@ -1,13 +1,12 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.DistributedTask.WebApi;
+using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi.Clients;
+using Microsoft.VisualStudio.Services.Search.WebApi;
 using Microsoft.VisualStudio.Services.WebApi;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using vsx.Extensions;
 using vsx.Models;
@@ -43,6 +42,10 @@ namespace vsx.Services
         public async Task<ReleaseHttpClient> GetReleaseHttpClient() => await _vssConnection.GetClientAsync<ReleaseHttpClient>();
 
         public async Task<TaskAgentHttpClient> GetTaskHttpClient() => await _vssConnection.GetClientAsync<TaskAgentHttpClient>();
+
+        public async Task<SearchHttpClient> GetSearchHttpClient() => await _vssConnection.GetClientAsync<SearchHttpClient>();
+
+        public async Task<GitHttpClient> GetGitHttpClient() => await _vssConnection.GetClientAsync<GitHttpClient>();
 
         private bool ValidateCredentials(CredentialsModel credentialsModel)
         {

@@ -12,7 +12,8 @@ namespace vsx.Commands
         Subcommand(Commands.Settings, typeof(SettingsCommand)),
         Subcommand(Commands.Builds, typeof(BuildDefinitionsCommand)),
         Subcommand(Commands.Releases, typeof(ReleaseDefinitionsCommand)),
-        Subcommand(Commands.TaskGroups, typeof(TaskGroupsCommand))]
+        Subcommand(Commands.TaskGroups, typeof(TaskGroupsCommand)),
+        Subcommand(Commands.Tasks, typeof(TasksCommand))]
     public class RootCommand
     {
         private readonly IConsole _console;

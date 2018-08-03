@@ -10,8 +10,6 @@ namespace vsx.Services
 
         Task<BuildDefinition> GetBuildDefinitionById(string rawId);
 
-        Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskId(string rawId);
-
-        Task<IList<BuildDefinition>> GetBuildDefinitionsByTaskName(string name);
+        Task<IList<BuildDefinition>> SearchForTaskInBuildDefinitions(string taskIdentifier);
     }
 }

@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AsyncEnumerator" Version="2.2.1" />
     <PackageReference Include="FluentValidation" Version="8.0.0-rc1" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
@@ -20,7 +21,13 @@
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.137.0-preview" />
     <PackageReference Include="Microsoft.VisualStudio.Services.Client" Version="16.137.0-preview" />
     <PackageReference Include="Microsoft.VisualStudio.Services.Release.Client" Version="16.137.0-preview" />
+    <PackageReference Include="Microsoft.VisualStudio.Services.Search.Client" Version="16.137.0-preview" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Build\" />
+    <Folder Include="Models\Release\" />
   </ItemGroup>
 
 </Project>

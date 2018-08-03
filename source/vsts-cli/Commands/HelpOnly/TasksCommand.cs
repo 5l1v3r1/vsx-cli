@@ -1,9 +1,9 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using vsx.Extensions;
 
-namespace vsx.Commands.HelpOnly
+namespace vsx.Commands
 {
-    [Command(Name = Commands.TaskGroups,
+    [Command(Name = Commands.Tasks,
         Description = "Manage tasks."),
         HelpOption,
         Subcommand(Commands.List, typeof(ListCommand)),

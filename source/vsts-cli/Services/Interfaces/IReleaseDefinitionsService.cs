@@ -9,5 +9,7 @@ namespace vsx.Services
         Task<IList<ReleaseDefinition>> GetReleaseDefinitions();
 
         Task<ReleaseDefinition> GetReleaseDefinitionById(string id);
+
+        Task<IList<ReleaseDefinition>> SearchForTaskInReleaseDefinitions(string taskIdentifier);
     }
 }

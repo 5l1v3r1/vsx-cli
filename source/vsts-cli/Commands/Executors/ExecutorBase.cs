@@ -21,13 +21,13 @@ namespace vsx.Commands
             _app = app;
         }
 
-        [Option]
+        [Option(ShortName = "-acc", LongName = "--account")]
         public string AccountName { get; set; } = default;
 
-        [Option]
+        [Option(ShortName = "-pat", LongName = "--accessToken")]
         public string PersonalAccessToken { get; set; } = default;
 
-        [Option]
+        [Option(ShortName = "-p", LongName = "--project")]
         public string Project { get; set; }
 
         internal virtual CredentialsModel UseCredentialsFromOptions() 
@@ -74,5 +74,7 @@ namespace vsx.Commands
         internal virtual Task<int> GetReleaseResults() => Task.FromResult(0);
 
         internal virtual Task<int> GetTaskGroupResults() => Task.FromResult(0);
+
+        
     }
 }
