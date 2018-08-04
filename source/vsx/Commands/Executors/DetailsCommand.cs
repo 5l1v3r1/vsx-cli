@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using vsx.Services;
@@ -24,7 +25,7 @@ namespace vsx.Commands
         }
 
         [Argument(0)]
-        public string DefinitionId { get; set; }
+        public string ResourceId { get; set; }
 
         [Option(CommandOptionType.NoValue)]
         public bool Detailed { get; set; }
@@ -33,32 +34,40 @@ namespace vsx.Commands
 
         internal override async Task<int> GetTaskResults()
         {
+            var parsedId = ParsePredicate<Guid>(ResourceId);
+
             var taskService = _app.GetRequiredService<ITaskService>();
-            var task = await taskService.GetTaskById(DefinitionId);
+            var task = await taskService.GetTaskById(parsedId);
 
             return ProcessResults(task);
         }
 
         internal override async Task<int> GetBuildResults()
         {
+            var parsedId = ParsePredicate<Int32>(ResourceId);
+
             var buildDefinitionsService = _app.GetRequiredService<IBuildDefinitionsService>();
-            var buildDefinition = await buildDefinitionsService.GetBuildDefinitionById(DefinitionId);
+            var buildDefinition = await buildDefinitionsService.GetBuildDefinitionById(parsedId);
 
             return ProcessResults(buildDefinition);
         }
 
         internal override async Task<int> GetReleaseResults()
         {
+            var parsedId = ParsePredicate<Int32>(ResourceId);
+
             var releaseDefinitionsService = _app.GetRequiredService<IReleaseDefinitionsService>();
-            var releaseDefinition = await releaseDefinitionsService.GetReleaseDefinitionById(DefinitionId);
+            var releaseDefinition = await releaseDefinitionsService.GetReleaseDefinitionById(parsedId);
 
             return ProcessResults(releaseDefinition);
         }
 
         internal override async Task<int> GetTaskGroupResults()
         {
+            var parsedId = ParsePredicate<Guid>(ResourceId);
+
             var taskGroupsService = _app.GetRequiredService<ITaskGroupsService>();
-            var taskGroup = await taskGroupsService.GetTaskGroupById(DefinitionId);
+            var taskGroup = await taskGroupsService.GetTaskGroupById(parsedId);
 
             return ProcessResults(taskGroup);
         }

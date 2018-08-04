@@ -23,18 +23,15 @@ namespace vsx.Services
             return await client.GetTaskGroupsAsync(_connectionService.Project);
         }
 
-        public async Task<TaskGroup> GetTaskGroupById(string rawId)
+        public async Task<TaskGroup> GetTaskGroupById(Guid taskGroupId)
         {
-            var taskGroupId = rawId.EvaluateToGuid();
             var taskGroups = await GetTaskGroups();
 
             return taskGroups.Where(x => x.Id == taskGroupId).FirstOrDefault();
         }
 
-        public async Task<IList<TaskGroup>> SearchForTaskInTaskGroups(string taskIdentifier)
+        public async Task<IList<TaskGroup>> SearchForTaskInTaskGroups(Guid taskId)
         {
-            var taskId = taskIdentifier.EvaluateToGuid();
-
             var taskGroups = await GetTaskGroups();
             var taskGroupsContainingTask = new List<TaskGroup>();
 

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.DistributedTask.WebApi;
-using vsx.Extensions;
 
 namespace vsx.Services
 {
@@ -22,9 +22,8 @@ namespace vsx.Services
             return await client.GetTaskDefinitionsAsync();
         }
 
-        public async Task<TaskDefinition> GetTaskById(string rawId)
+        public async Task<TaskDefinition> GetTaskById(Guid taskId)
         {
-            var taskId = rawId.EvaluateToGuid();
             var taskGroups = await GetTasks();
 
             return taskGroups.Where(x => x.Id == taskId).FirstOrDefault();
