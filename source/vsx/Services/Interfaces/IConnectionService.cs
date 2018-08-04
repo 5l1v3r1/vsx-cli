@@ -1,9 +1,9 @@
-﻿using Microsoft.TeamFoundation.Build.WebApi;
+﻿using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.DistributedTask.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi.Clients;
 using Microsoft.VisualStudio.Services.Search.WebApi;
-using System.Threading.Tasks;
 using vsx.Models;
 
 namespace vsx.Services

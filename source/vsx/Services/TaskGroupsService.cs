@@ -1,9 +1,8 @@
-﻿using Microsoft.TeamFoundation.DistributedTask.WebApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using vsx.Extensions;
+using Microsoft.TeamFoundation.DistributedTask.WebApi;
 
 namespace vsx.Services
 {
