@@ -1,10 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Microsoft.TeamFoundation.DistributedTask.WebApi;
 
 namespace vsx.Models
 {
-    public class NormalTaskModel
+    [Serializable()]
+    public class NormalTaskModel : MinimalTaskModel
     {
+        public string Description { get; set; }
+
+        public string DefinitionType { get; set; }
+
+        public string Category { get; set; }
+
+        public TaskVersion TaskVersion { get; set; }
+
+        public IList<string> Visibility { get; set; }
+
+        public string MinimumAgentVersion { get; set; }
     }
 }

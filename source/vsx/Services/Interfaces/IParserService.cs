@@ -2,7 +2,7 @@
 {
     public interface IParserService
     {
-        string SerializeBuildDetails<T>(T buildDefinition);
+        string SerializeDetails<T>(T buildDefinition);
 
         T DeserializeObject<T>(string input);
 

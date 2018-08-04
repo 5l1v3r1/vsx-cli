@@ -1,5 +1,9 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.TeamFoundation.Build.WebApi;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using vsx.Services;
 
@@ -24,40 +28,56 @@ namespace vsx.Commands
         }
 
         [Argument(0)]
-        public string TaskId { get; set; }
+        public string ResourceId { get; set; }
 
         private int OnExecute() => _connectionService.Connect(UseCredentialsFromOptions()) ? GetResults().Result : ConnectionError();
 
         internal override async Task<int> GetTaskResults()
         {
-            var taskService = _app.GetRequiredService<ITaskService>();
-            var task = await taskService.GetTaskById(TaskId);
+            var parsedId = ParsePredicate<Guid>(ResourceId);
 
-            return ProcessResults(task);
+            // Search in task groups
+            var taskGroupsService = _app.GetRequiredService<ITaskGroupsService>();
+            var taskGroups = await taskGroupsService.SearchForTaskInTaskGroups(parsedId);
+
+            // get task group ids
+            var taskGroupIds = taskGroups.Select(x => x.Id).ToList();
+
+
+            // search in builds for task and task groups result
+            // search in releases for task and task groups result
+
+            return 1;
         }
 
         internal override async Task<int> GetBuildResults()
         {
-            var buildDefinitionsService = _app.GetRequiredService<IBuildDefinitionsService>();
-            var buildDefinition = await buildDefinitionsService.SearchForTaskInBuildDefinitions(TaskId);
+            var parsedId = ParsePredicate<Guid>(ResourceId);
 
-            return ProcessResults(buildDefinition);
+            var buildDefinitionsService = _app.GetRequiredService<IBuildDefinitionsService>();
+            var buildDefinitions = await buildDefinitionsService.SearchForTaskInBuildDefinitions(parsedId);
+
+            return ProcessResults(buildDefinitions);
         }
 
         internal override async Task<int> GetReleaseResults()
         {
-            var releaseDefinitionsService = _app.GetRequiredService<IReleaseDefinitionsService>();
-            var releaseDefinition = await releaseDefinitionsService.SearchForTaskInReleaseDefinitions(TaskId);
+            var parsedId = ParsePredicate<Guid>(ResourceId);
 
-            return ProcessResults(releaseDefinition);
+            var releaseDefinitionsService = _app.GetRequiredService<IReleaseDefinitionsService>();
+            var releaseDefinitions = await releaseDefinitionsService.SearchForTaskInReleaseDefinitions(parsedId);
+
+            return ProcessResults(releaseDefinitions);
         }
 
         internal override async Task<int> GetTaskGroupResults()
         {
-            var taskGroupsService = _app.GetRequiredService<ITaskGroupsService>();
-            var taskGroup = await taskGroupsService.SearchForTaskInTaskGroups(TaskId);
+            var parsedId = ParsePredicate<Guid>(ResourceId);
 
-            return ProcessResults(taskGroup);
+            var taskGroupsService = _app.GetRequiredService<ITaskGroupsService>();
+            var taskGroups = await taskGroupsService.SearchForTaskInTaskGroups(parsedId);
+
+            return ProcessResults(taskGroups);
         }
     }
 }

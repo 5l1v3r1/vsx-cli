@@ -1,6 +1,7 @@
-﻿using Microsoft.TeamFoundation.Build.WebApi;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Build.WebApi;
 
 namespace vsx.Services
 {
@@ -8,8 +9,12 @@ namespace vsx.Services
     {
         Task<IList<BuildDefinition>> GetBuildDefinitions();
 
-        Task<BuildDefinition> GetBuildDefinitionById(string rawId);
+        Task<BuildDefinition> GetBuildDefinitionById(int definitionId);
 
-        Task<IList<BuildDefinition>> SearchForTaskInBuildDefinitions(string taskIdentifier);
+        Task<BuildDefinition> GetBuildDefinitionByName(string definitionName);
+
+        Task<IList<BuildDefinition>> SearchForTaskInBuildDefinitions(Guid taskId);
+
+        Task<IList<BuildDefinition>> SearchForTaskInBuildDefinitions(Guid[] taskIds);
     }
 }

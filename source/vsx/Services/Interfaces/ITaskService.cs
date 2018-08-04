@@ -1,6 +1,7 @@
-﻿using Microsoft.TeamFoundation.DistributedTask.WebApi;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.DistributedTask.WebApi;
 
 namespace vsx.Services
 {
@@ -8,6 +9,6 @@ namespace vsx.Services
     {
         Task<IList<TaskDefinition>> GetTasks();
 
-        Task<TaskDefinition> GetTaskById(string id);
+        Task<TaskDefinition> GetTaskById(Guid taskId);
     }
 }

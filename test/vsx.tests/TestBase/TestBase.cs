@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace vsx.Models
+namespace vsx.tests.TestBase
 {
-    public class VerboseTaskModel
+    public abstract class TestBase
     {
     }
 }

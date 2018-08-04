@@ -1,6 +1,7 @@
-﻿using McMaster.Extensions.CommandLineUtils;
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using McMaster.Extensions.CommandLineUtils;
 using vsx.Models;
 using vsx.Services;
 
@@ -58,9 +59,18 @@ namespace vsx.Commands
             }
         }
 
+        internal virtual T ParsePredicate<T>(string commandArgument)
+        {
+            if (typeof(T) == typeof(String)) return (T)(object)commandArgument;
+
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+
+            return (T)converter.ConvertFrom(commandArgument);
+        }
+
         internal virtual int ProcessResults<T>(T results)
         {
-            var parsedResults = _parseService.SerializeBuildDetails(results);
+            var parsedResults = _parseService.SerializeDetails(results);
             _fileService.SaveToJson(parsedResults);
             _console.WriteLine(parsedResults);
 
@@ -74,7 +84,5 @@ namespace vsx.Commands
         internal virtual Task<int> GetReleaseResults() => Task.FromResult(0);
 
         internal virtual Task<int> GetTaskGroupResults() => Task.FromResult(0);
-
-        
     }
 }

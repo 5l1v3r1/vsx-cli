@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi;
 
 namespace vsx.Services
 {
@@ -8,8 +9,8 @@ namespace vsx.Services
     {
         Task<IList<ReleaseDefinition>> GetReleaseDefinitions();
 
-        Task<ReleaseDefinition> GetReleaseDefinitionById(string id);
+        Task<ReleaseDefinition> GetReleaseDefinitionById(int definitionId);
 
-        Task<IList<ReleaseDefinition>> SearchForTaskInReleaseDefinitions(string taskIdentifier);
+        Task<IList<ReleaseDefinition>> SearchForTaskInReleaseDefinitions(Guid taskId);
     }
 }
