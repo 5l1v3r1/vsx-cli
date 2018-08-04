@@ -60,7 +60,7 @@ namespace vsx.Commands
 
         internal virtual int ProcessResults<T>(T results)
         {
-            var parsedResults = _parseService.SerializeBuildDetails(results);
+            var parsedResults = _parseService.SerializeDetails(results);
             _fileService.SaveToJson(parsedResults);
             _console.WriteLine(parsedResults);
 
