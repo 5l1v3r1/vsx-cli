@@ -3,6 +3,8 @@
 
 Search for specific tasks in build and release definitions.
 
+[![Build status](https://fblzs.visualstudio.com/sideprojects/_apis/build/status/vsx/vsx.cli.CI)](https://fblzs.visualstudio.com/sideprojects/_build/latest?definitionId=10)
+
 ## Features
 
 ...
