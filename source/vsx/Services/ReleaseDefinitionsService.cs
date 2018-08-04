@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi;
 using Microsoft.VisualStudio.Services.ReleaseManagement.WebApi.Contracts;
-using vsx.Extensions;
 
 namespace vsx.Services
 {

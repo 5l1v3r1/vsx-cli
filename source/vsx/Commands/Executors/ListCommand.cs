@@ -1,6 +1,6 @@
-﻿using McMaster.Extensions.CommandLineUtils;
+﻿using System.Threading.Tasks;
+using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 using vsx.Services;
 
 namespace vsx.Commands

@@ -1,5 +1,5 @@
-﻿using McMaster.Extensions.CommandLineUtils;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using McMaster.Extensions.CommandLineUtils;
 using vsx.Extensions;
 using vsx.Models;
 using vsx.Services;
