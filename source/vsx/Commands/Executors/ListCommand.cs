@@ -1,29 +1,34 @@
 ﻿using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
+<<<<<<< HEAD
+=======
+using Microsoft.Extensions.Configuration;
+>>>>>>> dev0804
 using Microsoft.Extensions.DependencyInjection;
 using vsx.Services;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.List)]
-    public class ListCommand : ExecutorBase
+    [Command(
+        Name = VsxCommand.List,
+        Description = "List tasks, task groups, build and release definitions.",
+        ExtendedHelpText = "")]
+    public class ListCommand : ExecutorMethodsBase
     {
-        private readonly IConnectionService _connectionService;
         private readonly CommandLineApplication _app;
 
         public ListCommand(
+            IConfiguration configuration,
             IConsole console,
             IConnectionService connectionService,
             IParserService parserService,
             IFileService fileService,
             CommandLineApplication app)
-            : base(console, parserService, fileService, app)
+            : base(configuration, console, connectionService, parserService, fileService, app)
         {
             _app = app;
-            _connectionService = connectionService;
         }
-
-        private int OnExecute() => _connectionService.Connect(UseCredentialsFromOptions()) ? GetResults().Result : ConnectionError();
 
         internal override async Task<int> GetTaskResults()
         {

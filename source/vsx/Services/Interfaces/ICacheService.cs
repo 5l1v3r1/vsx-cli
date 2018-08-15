@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using vsx.Models;
+﻿using vsx.Models;
 
 namespace vsx.Services
 {
@@ -10,11 +9,5 @@ namespace vsx.Services
         CredentialsModel GetConnection();
 
         void ClearConnectionCache();
-
-        void CacheApplicationSettings(Dictionary<string, string> settings);
-
-        ApplicationSettingsModel GetApplicationSettings();
-
-        void ClearApplicationSettingsCache();
     }
 }

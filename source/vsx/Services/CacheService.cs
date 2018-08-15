@@ -57,25 +57,6 @@ namespace vsx.Services
             if (File.Exists(_connectionPath)) File.Delete(_connectionPath);
         }
 
-        public void CacheApplicationSettings(Dictionary<string,string> settings)
-        {
-            var model = new ApplicationSettingsModel()
-            {
-                
-            };
-        }
-
-        public ApplicationSettingsModel GetApplicationSettings()
-        {
-            File.ReadAllText(_settingsPath);
-            return null;
-        }
-
-        public void ClearApplicationSettingsCache()
-        {
-            if (File.Exists(_settingsPath)) File.Delete(_settingsPath);
-        }
-
         private T DeserializeFromString<T>(string settings) where T: class
         {
             byte[] b = Convert.FromBase64String(settings);

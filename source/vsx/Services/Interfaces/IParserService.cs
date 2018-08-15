@@ -1,5 +1,8 @@
 ﻿namespace vsx.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IParserService
     {
         string SerializeDetails<T>(T buildDefinition);

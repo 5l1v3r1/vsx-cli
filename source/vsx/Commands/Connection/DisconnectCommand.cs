@@ -1,9 +1,11 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using vsx.Services;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Disconnect,
+    [Command(
+        Name = VsxCommand.Disconnect,
         FullName = "vsx: disconnect command",
         Description = "Clear the connection cache."),
         HelpOption]

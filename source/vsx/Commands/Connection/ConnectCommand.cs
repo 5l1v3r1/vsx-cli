@@ -3,10 +3,12 @@ using McMaster.Extensions.CommandLineUtils;
 using vsx.Extensions;
 using vsx.Models;
 using vsx.Services;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Connect,
+    [Command(
+        Name = VsxCommand.Connect,
         FullName = "vsx: connect command",
         Description = "Establish a connection to your VSTS account"),
         HelpOption]
