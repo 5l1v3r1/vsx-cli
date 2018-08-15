@@ -7,7 +7,6 @@ using McMaster.Extensions.CommandLineUtils;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.VisualStudio.Services.Search.WebApi.Contracts.Code;
 using Microsoft.VisualStudio.Services.WebApi;
-using vsx.Extensions;
 
 namespace vsx.Services
 {
@@ -73,6 +72,12 @@ namespace vsx.Services
         {
             _console.WriteLine($"Searching build definitions for task with id: {taskId}");
 
+            var listContainingSingleTask = new List<Guid> { taskId };
+            return await SearchForTaskInBuildDefinitions(listContainingSingleTask);
+        }
+
+        public async Task<IList<BuildDefinition>> SearchForTaskInBuildDefinitions(IList<Guid> taskIds)
+        {
             var definitions = await GetBuildDefinitions();
             var definitionsContainingTask = new List<BuildDefinition>();
 
@@ -83,7 +88,7 @@ namespace vsx.Services
                 foreach (var definition in definitions)
                 {
                     _console.WriteLine($"Processing build definition: {definition.Name} ({definition.Id})");
-                    await ProcessSingleDefinition(definition, taskId, definitionsContainingTask);
+                    await ProcessSingleDefinition(definition, taskIds, definitionsContainingTask);
                 };
             }
             else
@@ -91,7 +96,7 @@ namespace vsx.Services
                 await definitions.ParallelForEachAsync(async definition =>
                 {
                     _console.WriteLine($"Processing build definition: {definition.Name} ({definition.Id})");
-                    await ProcessSingleDefinition(definition, taskId, definitionsContainingTask);
+                    await ProcessSingleDefinition(definition, taskIds, definitionsContainingTask);
                 },
                 maxDegreeOfParalellism: 10);
             }
@@ -99,35 +104,40 @@ namespace vsx.Services
             return definitionsContainingTask;
         }
 
-        public Task<IList<BuildDefinition>> SearchForTaskInBuildDefinitions(Guid[] taskIds)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task ProcessSingleDefinition(BuildDefinition definition, Guid taskId, IList<BuildDefinition> definitionsContainingTask)
+        private async Task ProcessSingleDefinition(BuildDefinition definition, IList<Guid> taskIds, IList<BuildDefinition> definitionsContainingTask)
         {
             switch (definition.Process.Type)
             {
                 case ProcessType.Designer:
-                    if (SarchForTaskInDesignerProcess(taskId, definition.Process as DesignerProcess)) definitionsContainingTask.Add(definition);
+                    if (SarchForTaskInDesignerProcess(taskIds, definition.Process as DesignerProcess)) definitionsContainingTask.Add(definition);
                     break;
                 case ProcessType.Yaml:
-                    if (await SearchForTaskInYamlDefinition(taskId, definition.Process as YamlProcess, definition.Repository.Id)) definitionsContainingTask.Add(definition);
+                    if (await SearchForTaskInYamlDefinition(taskIds, definition.Process as YamlProcess, definition.Repository.Id)) definitionsContainingTask.Add(definition);
                     break;
             }
         }
 
-        private bool SarchForTaskInDesignerProcess(Guid taskId, DesignerProcess designerProcess)
+        private bool SarchForTaskInDesignerProcess(IList<Guid> taskIds, DesignerProcess designerProcess)
         {
-            var searchedTask = designerProcess.Phases
-                .SelectMany(phase => phase.Steps)
-                .Where(step => step.TaskDefinition.Id == taskId)
-                .FirstOrDefault();
+            var buildSteps = designerProcess
+                                .Phases
+                                .SelectMany(phase => phase.Steps);
 
-            return (searchedTask != null) ? true : false;
+            foreach (var taskId in taskIds)
+            {
+                var task = buildSteps.Where(step => step.TaskDefinition.Id == taskId)
+                                     .FirstOrDefault();
+
+                if (task != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        private async Task<bool> SearchForTaskInYamlDefinition(Guid taskId, YamlProcess yamlProcess, string repositoryId)
+        private async Task<bool> SearchForTaskInYamlDefinition(IList<Guid> taskIds, YamlProcess yamlProcess, string repositoryId)
         {
             if (string.IsNullOrEmpty(yamlProcess.YamlFilename))
             {
@@ -153,13 +163,11 @@ namespace vsx.Services
                 return false;
             }
 
-            return DoesYamlContainsTask(taskId, yamlFileContent) ? true : false;
+            return DoesYamlContainsTask(taskIds, yamlFileContent) ? true : false;
         }
 
         private string GetYamlFileName(string yamlFilename)
-        {
-            return ((yamlFilename).Contains(@"/")) ? _parserService.ParseYamlFileName(yamlFilename) : yamlFilename;
-        }
+            => ((yamlFilename).Contains(@"/")) ? _parserService.ParseYamlFileName(yamlFilename) : yamlFilename;
 
         private async Task<IEnumerable<CodeResult>> CodeSearchForYamlFile(string yamlFileName)
         {
@@ -191,7 +199,17 @@ namespace vsx.Services
             return string.Empty;
         }
 
-        private bool DoesYamlContainsTask(Guid taskId, string parsedYamlFile)
-            => (parsedYamlFile.Contains(taskId.ToString())) ? true : false;
+        private bool DoesYamlContainsTask(IList<Guid> taskIds, string parsedYamlFile)
+        {
+            foreach (var taskId in taskIds)
+            {
+                if (parsedYamlFile.Contains(taskId.ToString()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

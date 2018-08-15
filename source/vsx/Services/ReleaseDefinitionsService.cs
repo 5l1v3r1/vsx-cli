@@ -40,6 +40,12 @@ namespace vsx.Services
 
         public async Task<IList<ReleaseDefinition>> SearchForTaskInReleaseDefinitions(Guid taskId)
         {
+            var listContainingSingleTask = new List<Guid> { taskId };
+            return await SearchForTaskInReleaseDefinitions(listContainingSingleTask);
+        }
+
+        public async Task<IList<ReleaseDefinition>> SearchForTaskInReleaseDefinitions(IList<Guid> taskIds)
+        {
             var client = await _connectionService.GetReleaseHttpClient();
             var definitions = await client.GetReleaseDefinitionsAsync(project: _connectionService.Project, expand: ReleaseDefinitionExpands.None);
             var definitionsContainingTask = new List<ReleaseDefinition>();
@@ -49,7 +55,7 @@ namespace vsx.Services
                 foreach (var definition in definitions)
                 {
                     var expandedDefinition = await client.GetReleaseDefinitionAsync(_connectionService.Project, definition.Id);
-                    if (DoesReleaseDefinitionContainsTask(expandedDefinition, taskId)) definitionsContainingTask.Add(expandedDefinition);
+                    if (DoesReleaseDefinitionContainsTask(expandedDefinition, taskIds)) definitionsContainingTask.Add(expandedDefinition);
                 };
             }
             else
@@ -57,7 +63,7 @@ namespace vsx.Services
                 await definitions.ParallelForEachAsync(async definition =>
                 {
                     var expandedDefinition = await client.GetReleaseDefinitionAsync(_connectionService.Project, definition.Id);
-                    if (DoesReleaseDefinitionContainsTask(expandedDefinition, taskId)) definitionsContainingTask.Add(expandedDefinition);
+                    if (DoesReleaseDefinitionContainsTask(expandedDefinition, taskIds)) definitionsContainingTask.Add(expandedDefinition);
                 },
                 maxDegreeOfParalellism: 10);
             }
@@ -65,15 +71,26 @@ namespace vsx.Services
             return definitionsContainingTask;
         }
 
-        private bool DoesReleaseDefinitionContainsTask(ReleaseDefinition definition, Guid taskId)
+        private bool DoesReleaseDefinitionContainsTask(ReleaseDefinition definition, IList<Guid> taskIds)
         {
-            var searchedTask = definition.Environments
-                     .SelectMany(environment => environment.DeployPhases)
-                     .SelectMany(deployPhase => deployPhase.WorkflowTasks)
-                     .Where(task => task?.TaskId == taskId)
-                     .FirstOrDefault();
+            var deployPhases = definition
+                                .Environments
+                                .SelectMany(environment => environment.DeployPhases)
+                                .SelectMany(deployPhase => deployPhase.WorkflowTasks);
 
-            return (searchedTask != null) ? true : false;
+            foreach (var taskId in taskIds)
+            {
+                var task = deployPhases
+                            .Where(t => t?.TaskId == taskId)
+                            .FirstOrDefault();
+
+                if (task != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

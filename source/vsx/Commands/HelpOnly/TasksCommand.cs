@@ -1,14 +1,15 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using vsx.Extensions;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Tasks,
+    [Command(Name = VsxCommand.Tasks,
         Description = "Manage tasks."),
         HelpOption,
-        Subcommand(Commands.List, typeof(ListCommand)),
-        Subcommand(Commands.Search, typeof(SearchCommand)),
-        Subcommand(Commands.Details, typeof(DetailsCommand))]
+        Subcommand(VsxCommand.List, typeof(ListCommand)),
+        Subcommand(VsxCommand.Search, typeof(SearchCommand)),
+        Subcommand(VsxCommand.Details, typeof(DetailsCommand))]
     public class TasksCommand
     {
         private readonly IConsole _console;
@@ -22,7 +23,7 @@ namespace vsx.Commands
 
         private int OnExecute()
         {
-            _console.SpecifyASubcommand(Commands.TaskGroups);
+            _console.SpecifyASubcommand(VsxCommand.TaskGroups);
             _app.ShowHelp();
             return 1;
         }

@@ -1,14 +1,16 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using vsx.Extensions;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.Releases,
+    [Command(
+        Name = VsxCommand.Releases,
         Description = "Manage VSTS release definition tasks."),
         HelpOption,
-        Subcommand(Commands.List, typeof(ListCommand)),
-        Subcommand(Commands.Search, typeof(SearchCommand)),
-        Subcommand(Commands.Details, typeof(DetailsCommand))]
+        Subcommand(VsxCommand.List, typeof(ListCommand)),
+        Subcommand(VsxCommand.Search, typeof(SearchCommand)),
+        Subcommand(VsxCommand.Details, typeof(DetailsCommand))]
     public class ReleaseDefinitionsCommand
     {
         private readonly IConsole _console;
@@ -22,7 +24,7 @@ namespace vsx.Commands
 
         private int OnExecute()
         {
-            _console.SpecifyASubcommand(Commands.Releases);
+            _console.SpecifyASubcommand(VsxCommand.Releases);
             _app.ShowHelp();
             return 1;
         }

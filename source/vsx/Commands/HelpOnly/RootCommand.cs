@@ -1,19 +1,20 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using vsx.Extensions;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Commands.Vsx,
+    [Command(
+        Name = VsxCommand.Vsx,
         FullName = "vsx: vsts-cli tool",
         Description = "Search for VSTS build tasks in build and release definitions."),
         HelpOption,
-        Subcommand(Commands.Connect, typeof(ConnectCommand)),
-        Subcommand(Commands.Disconnect, typeof(DisconnectCommand)),
-        Subcommand(Commands.Settings, typeof(SettingsCommand)),
-        Subcommand(Commands.Builds, typeof(BuildDefinitionsCommand)),
-        Subcommand(Commands.Releases, typeof(ReleaseDefinitionsCommand)),
-        Subcommand(Commands.TaskGroups, typeof(TaskGroupsCommand)),
-        Subcommand(Commands.Tasks, typeof(TasksCommand))]
+        Subcommand(VsxCommand.Connect, typeof(ConnectCommand)),
+        Subcommand(VsxCommand.Disconnect, typeof(DisconnectCommand)),
+        Subcommand(VsxCommand.Builds, typeof(BuildDefinitionsCommand)),
+        Subcommand(VsxCommand.Releases, typeof(ReleaseDefinitionsCommand)),
+        Subcommand(VsxCommand.TaskGroups, typeof(TaskGroupsCommand)),
+        Subcommand(VsxCommand.Tasks, typeof(TasksCommand))]
     public class RootCommand
     {
         private readonly IConsole _console;
@@ -27,7 +28,7 @@ namespace vsx.Commands
 
         private int OnExecute()
         {
-            _console.SpecifyASubcommand(Commands.Vsx);
+            _console.SpecifyASubcommand(VsxCommand.Vsx);
             _app.ShowHelp();
             return 1;
         }

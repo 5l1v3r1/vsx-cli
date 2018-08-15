@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using vsx.Services;
+using VsxCommand = vsx.Helpers.Commands;
 
 namespace vsx.Commands
 {
-    [Command(Name = Commands.List)]
-    public class DetailsCommand : ExecutorBase
+    [Command(
+        Name = VsxCommand.Details, 
+        Description = "",
+        ExtendedHelpText = "")]
+    public class DetailsCommand : ExecutorMethodsBase
     {
-        private readonly IConnectionService _connectionService;
         private readonly CommandLineApplication _app;
 
         public DetailsCommand(
+            IConfiguration configuration,
             IConsole console,
             IConnectionService connectionService,
             IParserService parserService,
             IFileService fileService,
             CommandLineApplication app)
-            : base(console, parserService, fileService, app)
+            : base(configuration, console, connectionService, parserService, fileService, app)
         {
-            _connectionService = connectionService;
             _app = app;
         }
 
         [Argument(0)]
         public string ResourceId { get; set; }
-
-        [Option(CommandOptionType.NoValue)]
-        public bool Detailed { get; set; }
-
-        private int OnExecute() => _connectionService.Connect(UseCredentialsFromOptions()) ? GetResults().Result : ConnectionError();
 
         internal override async Task<int> GetTaskResults()
         {

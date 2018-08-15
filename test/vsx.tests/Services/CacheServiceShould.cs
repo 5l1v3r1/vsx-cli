@@ -30,23 +30,5 @@ namespace vsx.tests.Services
         {
 
         }
-
-        [Fact]
-        public void ShouldCacheApplicationSettings()
-        {
-
-        }
-
-        [Fact]
-        public void ShouldGetApplicationSettings()
-        {
-
-        }
-
-        [Fact]
-        public void ShouldClearAppliocationSettingsCache()
-        {
-
-        }
     }
 }
