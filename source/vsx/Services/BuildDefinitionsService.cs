@@ -109,7 +109,7 @@ namespace vsx.Services
             switch (definition.Process.Type)
             {
                 case ProcessType.Designer:
-                    if (SarchForTaskInDesignerProcess(taskIds, definition.Process as DesignerProcess)) definitionsContainingTask.Add(definition);
+                    if (SearchForTaskInDesignerProcess(taskIds, definition.Process as DesignerProcess)) definitionsContainingTask.Add(definition);
                     break;
                 case ProcessType.Yaml:
                     if (await SearchForTaskInYamlDefinition(taskIds, definition.Process as YamlProcess, definition.Repository.Id)) definitionsContainingTask.Add(definition);
@@ -117,7 +117,7 @@ namespace vsx.Services
             }
         }
 
-        private bool SarchForTaskInDesignerProcess(IList<Guid> taskIds, DesignerProcess designerProcess)
+        private bool SearchForTaskInDesignerProcess(IList<Guid> taskIds, DesignerProcess designerProcess)
         {
             var buildSteps = designerProcess
                                 .Phases
